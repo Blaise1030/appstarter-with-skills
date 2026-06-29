@@ -91,6 +91,12 @@
       "skillPath": "skills/engineering/prototype/SKILL.md",
       "computedHash": "e70c8933d30153a4da47865829d356824b2a830367275e3b00c7b431a1544a79"
     },
+    "release-please-standards": {
+      "source": "laurigates/claude-plugins",
+      "sourceType": "github",
+      "skillPath": "configure-plugin/skills/release-please-standards/SKILL.md",
+      "computedHash": "971ce645ce53cc8857188a51fe7875cd5a3bb8d05b491914649b14546bbd55d9"
+    },
     "setup-matt-pocock-skills": {
       "source": "mattpocock/skills",
       "sourceType": "github",
