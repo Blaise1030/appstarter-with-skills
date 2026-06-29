@@ -6,6 +6,8 @@ allowBuilds:
   esbuild: true
   '@parcel/watcher': true
   vue-demi: true
+  sharp: true
+  workerd: true
 
 linkWorkspacePackages: true
 preferWorkspacePackages: true

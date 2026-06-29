@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Default / local deploy target (override with --env staging|production in CI)
+  "name": "appstarter-web",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2025-07-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".output/public",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "env": {
+    // Worker A — staging (PR previews)
+    "staging": {
+      "name": "appstarter-web-staging",
+      "vars": {
+        "NUXT_PUBLIC_ENV": "staging"
+      }
+    },
+    // Worker B — production (releases)
+    "production": {
+      "name": "appstarter-web-production",
+      "vars": {
+        "NUXT_PUBLIC_ENV": "production"
+      }
+    }
+  }
+}

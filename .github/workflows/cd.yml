@@ -36,15 +36,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build for Cloudflare Pages
-        run: NITRO_PRESET=cloudflare-pages pnpm --filter @appstarter/web build
+      - name: Build for Cloudflare Workers
+        run: pnpm --filter @appstarter/web build
 
-      - name: Deploy to staging
+      - name: Deploy to staging worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/web/dist --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }} --branch=staging --commit-dirty=true
+          workingDirectory: apps/web
+          command: deploy --env staging
 
   deploy-production:
     if: github.event_name == 'release'
@@ -71,12 +72,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build for Cloudflare Pages
-        run: NITRO_PRESET=cloudflare-pages pnpm --filter @appstarter/web build
+      - name: Build for Cloudflare Workers
+        run: pnpm --filter @appstarter/web build
 
-      - name: Deploy to production
+      - name: Deploy to production worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/web/dist --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT }} --branch=main --commit-dirty=true
+          workingDirectory: apps/web
+          command: deploy --env production

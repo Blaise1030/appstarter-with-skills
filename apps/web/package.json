@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
+    "build:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
@@ -27,6 +30,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.1",
     "tailwindcss": "^4.3.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.105.0"
   }
 }
