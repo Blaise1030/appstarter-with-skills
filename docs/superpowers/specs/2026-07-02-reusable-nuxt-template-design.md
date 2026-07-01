@@ -28,6 +28,8 @@ A minimal worked example establishing the pattern every future feature follows. 
 - `apps/web/app/components/NoteCard.vue` — single-purpose display component.
 - `apps/web/app/composables/useNotes.test.ts` and `apps/web/app/components/NoteCard.test.ts` — Vitest coverage for the composable and component.
 
+Demonstrates all three UI conventions below: the add-note form fires a toast on success/failure, the home page (`app.vue`) links to `/notes` via `NuxtLink` (not `<a>`/`router.push`), and the notes list supports a `?tag=` filter reflected in the URL.
+
 ## Folder structure convention
 
 Idiomatic Nuxt (type-based), not feature-folders: `app/pages/`, `app/components/`, `app/composables/`, `server/api/`. This matches Nuxt's auto-import conventions and the vendored `.agents/skills/nuxt` reference exactly, so agents get correct behavior without a project-specific override to learn. Feature-folders were considered and rejected — they only pay off at a scale (many unrelated domains) this template isn't targeting, and would require an extra rule taught in every downstream project's docs.
@@ -36,13 +38,19 @@ Idiomatic Nuxt (type-based), not feature-folders: `app/pages/`, `app/components/
 
 Composables call `$fetch`/`useFetch` only against this app's own `/api/*` routes. Server routes (`server/api/*`) are the only place that talk to anything external (a real backend, a third-party API, a database — none exist yet). This keeps the frontend swappable later: the mock in-memory data in `server/api/notes.get.ts` can be replaced with a real backend without touching any page or component.
 
+## UI conventions
+
+- **Toast on mutations.** Every create/update/delete calls a shadcn-vue toast on both success and failure (`Sonner`/`useToast` from `shadcn-vue`, added via the shadcn CLI like the existing `Button` component). No silent mutations — the user always gets feedback, and agents don't need to invent ad-hoc feedback patterns per feature.
+- **`NuxtLink` for navigation.** Any link between pages uses `<NuxtLink>`, never `<a href>` or programmatic `router.push` for plain navigation (`router.push` is still fine for post-mutation redirects). Preserves Nuxt's client-side routing and prefetching by default.
+- **Query params for filters.** Any page with filterable/sortable list state reflects that state in the URL via `useRoute().query` / `navigateTo({ query })`, not local component state. Makes filtered views shareable/bookmarkable and gives agents one consistent place to read and write filter state instead of reinventing it per page.
+
 ## Error handling
 
 Server routes throw `createError({ statusCode, message })`. Pages and composables surface errors via Nuxt's built-in `error` state from `useFetch` (`const { data, error } = await useFetch(...)`). No custom error-boundary abstraction — YAGNI until a project actually needs one.
 
 ## Conventions doc
 
-Add `.agents/skills/project-conventions/SKILL.md` capturing the folder-structure and data-fetching rules above, so agents pick it up the same way they pick up the vendored Cloudflare/Nuxt skills. The root `CLAUDE.md` currently contains only the context-mode plugin's auto-injected routing rules (untracked as of this writing) — once reviewed, project-specific conventions can live there instead of or alongside that content; this is a follow-up decision for the user, not part of this design.
+Add `.agents/skills/project-conventions/SKILL.md` capturing the folder-structure, data-fetching, and UI conventions above, so agents pick it up the same way they pick up the vendored Cloudflare/Nuxt skills. The root `CLAUDE.md` currently contains only the context-mode plugin's auto-injected routing rules (untracked as of this writing) — once reviewed, project-specific conventions can live there instead of or alongside that content; this is a follow-up decision for the user, not part of this design.
 
 ## `packages/shared`
 
