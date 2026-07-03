@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     transpile: ['@appstarter/shared'],
   },
 
-  modules: ['shadcn-nuxt'],
+  modules: ['shadcn-nuxt', '@nuxt/eslint'],
 
   shadcn: {
     prefix: '',

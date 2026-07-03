@@ -8,6 +8,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "lint": "eslint .",
     "deploy:staging": "wrangler deploy --env staging",
     "deploy:production": "wrangler deploy --env production",
     "postinstall": "nuxt prepare"
@@ -28,7 +29,9 @@
     "vue-router": "^5.1.0"
   },
   "devDependencies": {
+    "@nuxt/eslint": "^1.16.0",
     "@tailwindcss/vite": "^4.3.1",
+    "eslint": "^10.6.0",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
     "wrangler": "^4.105.0"
