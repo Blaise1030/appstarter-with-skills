@@ -5,6 +5,7 @@ import { appName } from '@appstarter/shared'
 <template>
   <div class="flex min-h-svh flex-col items-center justify-center gap-6 p-6">
     <NuxtRouteAnnouncer />
+    <Toaster />
     <div class="flex flex-col items-center gap-2 text-center">
       <h1 class="text-2xl font-semibold tracking-tight">
         {{ appName }}
