@@ -10,6 +10,7 @@
     "preview": "nuxt preview",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
+    "test": "vitest run",
     "deploy:staging": "wrangler deploy --env staging",
     "deploy:production": "wrangler deploy --env production",
     "postinstall": "nuxt prepare"
@@ -31,10 +32,14 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.16.0",
+    "@nuxt/test-utils": "^4.0.3",
     "@tailwindcss/vite": "^4.3.1",
+    "@vue/test-utils": "^2.4.11",
     "eslint": "^10.6.0",
+    "happy-dom": "^20.10.6",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3",
+    "vitest": "^4.1.9",
     "vue-tsc": "^3.3.6",
     "wrangler": "^4.105.0"
   }
