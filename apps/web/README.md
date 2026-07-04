@@ -73,3 +73,12 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## CI/CD
+
+Two GitHub Actions workflows run against this repo:
+
+- **CI** (`.github/workflows/ci.yml`) — on every push/PR to `main`: install, lint, typecheck, test, and build the whole workspace.
+- **CD** (`.github/workflows/cd.yml`) — deploys to Cloudflare Workers:
+  - On each PR, uploads a Cloudflare Workers preview version (`wrangler versions upload --env preview`) and comments the preview URL on the PR.
+  - On a published GitHub release, deploys the release tag to the production Worker (`wrangler deploy --env production`).
