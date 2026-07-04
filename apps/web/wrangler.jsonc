@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  // Default / local deploy target (override with --env staging|production in CI)
+  // Default / local deploy target (override with --env preview|production in CI)
   "name": "appstarter-web",
   "main": ".output/server/index.mjs",
   "compatibility_date": "2025-07-15",
@@ -13,11 +13,12 @@
     "enabled": true
   },
   "env": {
-    // Worker A — staging (PR previews)
-    "staging": {
-      "name": "appstarter-web-staging",
+    // Worker A — preview (PR previews, name overridden per-PR in CI via --name)
+    "preview": {
+      "name": "appstarter-web-preview",
+      "preview_urls": true,
       "vars": {
-        "NUXT_PUBLIC_ENV": "staging"
+        "NUXT_PUBLIC_ENV": "preview"
       }
     },
     // Worker B — production (releases)

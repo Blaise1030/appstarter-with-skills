@@ -9,11 +9,11 @@ export default defineNuxtConfig({
     preset: 'cloudflare_module',
     cloudflare: {
       // Emulate staging bindings during local dev (`wrangler deploy --env staging` in CI)
-      wranglerEnv: 'staging',
+      dev: { environment: 'staging' },
     },
   },
 
-  css: ['~/assets/css/tailwind.css'],
+  css: ['~/assets/css/tailwind.css', 'vue-sonner/style.css'],
 
   vite: {
     plugins: [tailwindcss()],
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     transpile: ['@appstarter/shared'],
   },
 
-  modules: ['shadcn-nuxt'],
+  modules: ['shadcn-nuxt', '@nuxt/eslint'],
 
   shadcn: {
     prefix: '',

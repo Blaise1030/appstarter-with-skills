@@ -8,7 +8,11 @@ allowBuilds:
   vue-demi: true
   sharp: true
   workerd: true
+  unrs-resolver: false
 
 linkWorkspacePackages: true
 preferWorkspacePackages: true
 autoInstallPeers: true
+
+overrides:
+  h3: 1.15.11

@@ -7,9 +7,12 @@
   "scripts": {
     "dev": "pnpm --filter @appstarter/web dev",
     "build": "pnpm -r build",
-    "preview": "pnpm --filter @appstarter/web preview"
+    "preview": "pnpm --filter @appstarter/web preview",
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   }
 }
