@@ -13,14 +13,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy-staging:
+  deploy-preview:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
+      pull-requests: write
     environment:
-      name: staging
+      name: preview
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,13 +43,24 @@ jobs:
       - name: Build for Cloudflare Workers
         run: pnpm --filter @appstarter/web build
 
-      - name: Deploy to staging worker
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: apps/web
-          command: deploy --env staging
+      # ponytail: relies on wrangler's native `preview_urls` (wrangler.jsonc) instead of a
+      # hand-rolled per-PR worker; each version upload gets its own short-lived preview URL.
+      - name: Upload PR preview version
+        id: deploy
+        working-directory: apps/web
+        run: |
+          OUTPUT=$(pnpm exec wrangler versions upload --env preview --message "PR #${{ github.event.pull_request.number }}")
+          echo "$OUTPUT"
+          URL=$(echo "$OUTPUT" | grep -oE 'https://[^ ]+\.workers\.dev' | head -n1)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL on PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY="Preview: ${{ steps.deploy.outputs.url }}"
+          gh pr comment "${{ github.event.pull_request.number }}" --body "$BODY" --edit-last \
+            || gh pr comment "${{ github.event.pull_request.number }}" --body "$BODY"
 
   deploy-production:
     if: github.event_name == 'release'
