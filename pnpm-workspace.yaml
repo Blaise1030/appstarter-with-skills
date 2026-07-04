@@ -9,6 +9,7 @@ allowBuilds:
   sharp: true
   workerd: true
   unrs-resolver: false
+  better-sqlite3: true
 
 linkWorkspacePackages: true
 preferWorkspacePackages: true
